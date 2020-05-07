@@ -18,7 +18,12 @@ class _FirstViewState extends State<FirstView> {
             Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              color: Colors.red,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage('https://i.pinimg.com/originals/65/f5/6e/65f56efd2a0a3144424b4f47a39cd54f.jpg'),
+                  fit: BoxFit.cover
+                )
+              ),
             ),
             IconButton(
               icon: Icon(Icons.clear),

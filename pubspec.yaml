@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   carousel_slider: ^2.1.0
+  sliding_up_panel: ^1.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -70,8 +71,6 @@ flutter:
     - family: Pacifico
       fonts:
        - asset: fonts/Pacifico-Regular.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
+    - family: CustomIcons
+      fonts:
+      - asset: fonts/CustomIcons.ttf
