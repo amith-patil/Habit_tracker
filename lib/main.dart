@@ -46,13 +46,14 @@ class _frontpageState extends State<frontpage> {
   Widget build(BuildContext context) {
     var _width = MediaQuery.of(context).size.width;
     var _height = MediaQuery.of(context).size.height;
+    var _statusbar = MediaQuery.of(context).padding.top;
     return Scaffold(
       body: SlidingUpPanel(
         controller: _pc,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         minHeight: _height * 0.07,
-        maxHeight: _height -83,
+        maxHeight: _height / 1.12,
         parallaxEnabled: true,
         parallaxOffset: 0.2,
         defaultPanelState: PanelState.OPEN,
@@ -62,16 +63,18 @@ class _frontpageState extends State<frontpage> {
               color: Colors.white
           ),
           //color: Colors.white,
-          child: SizedBox(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 40,top: 10,right: 190,left: 190),
-              child: Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 8),
+                height: 6,
+                width: 64,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Colors.grey
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.grey[300]
                 ),
               ),
-            ),
+            ],
           ),
         ),
         body: Container(
@@ -112,169 +115,181 @@ class _frontpageState extends State<frontpage> {
                 ),
                 Column(
                   children: <Widget>[
-                    Container(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(top: 125, left: 10),
-                                child: Text(
-                                  'Hi Amith!',
-                                  style: TextStyle(
-                                      fontSize: 35,
-                                      fontFamily: 'Pacifico',
-                                      color: Colors.grey),
-                                ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 8,
+                              child: Column(
+                                children: <Widget>[
+                                  Expanded(child: Container()),
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    margin: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      'Hi Amith!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontFamily: 'Pacifico',
+                                          color: Colors.grey),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          Column(
-                            children: <Widget>[
-
-                              Padding(
-                                padding:
-                                const EdgeInsets.only(top: 35,right: 20),
-                                child: IconButton(
-                                  icon: Icon(CustomIcons.plus),
-                                  color: Colors.grey,
-                                  onPressed: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SecondPage() ));
-                                  },
-                                  //iconSize: 25,
-                                ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 2,
+                                    child: IconButton(
+                                      icon: Icon(CustomIcons.plus),
+                                      color: Colors.grey,
+                                      onPressed: (){
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => SecondPage() ));
+                                      },
+                                      //iconSize: 25,
+                                    ),
+                                  ),
+                                  Expanded(
+                                      flex: 1,child: SizedBox()),
+                                  Expanded(
+                                    flex: 1,
+                                    child: IconButton(
+                                      onPressed: () => _pc.close(),
+                                      icon: Icon(CustomIcons.filter),
+                                      color: Colors.grey,
+                                      //iconSize: 40,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Padding(
-                                padding:
-                                const EdgeInsets.only(top: 55,right: 20),
-                                child: IconButton(
-                                  onPressed: () => _pc.close(),
-                                  icon: Icon(CustomIcons.filter),
-                                  color: Colors.grey,
-                                  //iconSize: 40,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ]
+                            ),
+                          ]
+                        ),
                       ),
                     ),
-                    CarouselSlider(
-                        options: CarouselOptions(
-                          height: _height * 0.67,
-                          aspectRatio: 1,
-                          initialPage: 0,
-                          enableInfiniteScroll: false,
-                          viewportFraction: 0.8,
-                          enlargeCenterPage: true,
-                        ),
-                        items: <Widget>[
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              width: _width,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                //color: Colors.yellow
-                              ),
-                              child: Container(
-                                height: _height * 0.4,
-                                width: _width * 0.6,
-                                //color: Colors.red,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Text(
-                                      'Try Something\n new today',
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 30),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Text(
-                                      'if you do something consistently for 21 days, it becomes a habit! Are you ready to start a new habit?',
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w200,
-                                          fontSize: 20),
-                                    )
-                                  ],
-                                ),
-                              )),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 50 ),
-                            child: Hero(
-                              tag: "Var1",
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => FirstView()));
-                                },
-                                child: Material(
-                                  elevation: 15,
+                    Expanded(
+                      flex: 3,
+                      child: CarouselSlider(
+                          options: CarouselOptions(
+                            height: _height,
+                            aspectRatio: 1,
+                            initialPage: 0,
+                            enableInfiniteScroll: false,
+                            viewportFraction: 0.8,
+                            enlargeCenterPage: true,
+                          ),
+                          items: <Widget>[
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                width: _width,
+                                decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: Container(
-                                    width: _width,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.red,
-                                      image: DecorationImage(
-                                          image: NetworkImage('https://i.pinimg.com/originals/65/f5/6e/65f56efd2a0a3144424b4f47a39cd54f.jpg'),
-                                          fit: BoxFit.cover
+                                  //color: Colors.yellow
+                                ),
+                                child: Container(
+                                  height: _height * 0.4,
+                                  width: _width * 0.6,
+                                  //color: Colors.red,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: 20,
                                       ),
-                                    ),
+                                      Text(
+                                        'Try Something\n new today',
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 30),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        'if you do something consistently for 21 days, it becomes a habit! Are you ready to start a new habit?',
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 20),
+                                      )
+                                    ],
+                                  ),
+                                )),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 50 ),
+                              child: Hero(
+                                tag: "Var1",
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => FirstView()));
+                                  },
+                                  child: Material(
+                                    elevation: 15,
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Container(
+                                      width: _width,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.red,
+                                        image: DecorationImage(
+                                            image: NetworkImage('https://i.pinimg.com/originals/65/f5/6e/65f56efd2a0a3144424b4f47a39cd54f.jpg'),
+                                            fit: BoxFit.cover
+                                        ),
+                                      ),
 
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 50),
-                            child: Material(
-                              elevation: 15,
-                              borderRadius: BorderRadius.circular(10),
-                              child: Container(
-                                width: _width,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.blue,
-                                    image: DecorationImage(
-                                      image: NetworkImage('https://www.itl.cat/pngfile/big/30-302874_hd-cover-dark-forest-wallpapers-high-quality-wallpapers.jpg'),
-                                      fit: BoxFit.cover,
-                                    )),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 50),
+                              child: Material(
+                                elevation: 15,
+                                borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                  width: _width,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.blue,
+                                      image: DecorationImage(
+                                        image: NetworkImage('https://www.itl.cat/pngfile/big/30-302874_hd-cover-dark-forest-wallpapers-high-quality-wallpapers.jpg'),
+                                        fit: BoxFit.cover,
+                                      )),
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 50),
-                            child: Material(
-                              elevation: 15,
-                              borderRadius: BorderRadius.circular(10),
-                              child: Container(
-                                width: _width,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.green,
-                                    image: DecorationImage(
-                                        image: NetworkImage('https://wallpaperplay.com/walls/full/d/a/5/30774.jpg'),
-                                        fit: BoxFit.cover
-                                    )),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 50),
+                              child: Material(
+                                elevation: 15,
+                                borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                  width: _width,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.green,
+                                      image: DecorationImage(
+                                          image: NetworkImage('https://wallpaperplay.com/walls/full/d/a/5/30774.jpg'),
+                                          fit: BoxFit.cover
+                                      )),
+                                ),
                               ),
                             ),
-                          ),
-                        ]),
+                          ]),
+                    ),
                   ],
                 ),
               ],
