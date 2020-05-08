@@ -25,4 +25,5 @@ class CustomIcons {
   static const IconData bar_chart = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData filter = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData user = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData home = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
