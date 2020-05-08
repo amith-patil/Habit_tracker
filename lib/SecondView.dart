@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'Size_Config.dart';
+
 class SecondView extends StatefulWidget {
   @override
   _SecondViewState createState() => _SecondViewState();
@@ -31,12 +33,21 @@ class _SecondViewState extends State<SecondView> {
                 ),
               ),
             ),
-            IconButton(
-              icon: Icon(Icons.clear),
-              iconSize: 50,
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            Positioned(
+              top: MediaQuery.of(context).size.height / 100 * 3,
+              left: MediaQuery.of(context).size.width / 100 * 5,
+              child: Material(
+                shape: CircleBorder(),
+                elevation: 10,
+
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  iconSize: Size_Config.blockSizeHorizontal * 7,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
             ),
           ],
         ),

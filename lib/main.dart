@@ -5,11 +5,9 @@ import 'package:carouseldemo/FirstView.dart';
 import 'package:carouseldemo/Size_Config.dart';
 import 'package:carouseldemo/custom_icons_icons.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:carouseldemo/custom_icons_icons.dart';
 
 import 'FadeIn.dart';
 import 'FourthVIew.dart';
@@ -67,9 +65,16 @@ class _frontpageState extends State<frontpage> {
   PageController _pgc = new PageController(initialPage: 0);
   void changePage(int index) {
     setState(() {
-      _currentIndex = index;
-      print(index);
-      _pgc.animateToPage(_currentIndex, duration: Duration (milliseconds: 300), curve: Curves.easeInOut);
+      bool delta;
+      int time;
+      if ( _currentIndex > index) {
+        _currentIndex - index == 1 ? delta = true : delta = false; }
+       else if ( index > _currentIndex) {
+          index - _currentIndex == 1 ? delta = true : delta = false;
+      }
+      delta ? time = 400 : time = 800;
+         _currentIndex = index;
+      _pgc.animateToPage(_currentIndex, duration: Duration(milliseconds: time), curve: Curves.easeInOut);
 
     });
   }
@@ -114,15 +119,19 @@ class _frontpageState extends State<frontpage> {
             body: Stack(
               alignment: Alignment.topRight,
               children: <Widget>[
-
                 Container(
                   width: Size_Config.screenWidth,
                   height: Size_Config.screenHeight,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [Colors.red, Colors.purple])),
+                    image: DecorationImage(
+                      image: AssetImage('images/imagebg.png'),
+                      colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.1), BlendMode.dstATop),
+                      fit: BoxFit.cover
+                    ),gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [Colors.red, Colors.purple])
+                      ),
                   child: Padding(
                     padding:  EdgeInsets.symmetric(
                         vertical: Size_Config.blockSizeVertical * 20, horizontal: Size_Config.blockSizeHorizontal * 5),
@@ -166,9 +175,7 @@ class _frontpageState extends State<frontpage> {
                                   onPressed: () {
                                     Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SecondPage()));
+                                        PageRouteBuilder(transitionDuration: Duration(milliseconds: 600),  pageBuilder: (_,__,___) => SecondPage()));
                                   },
                                   //iconSize: 25,
                                 ),
@@ -202,28 +209,34 @@ class _frontpageState extends State<frontpage> {
                 Container(
                   alignment: Alignment.topLeft,
                   width: Size_Config.screenWidth,
-                  child: FadeIn(1,TweenAnimationBuilder(
-                    duration: Duration(seconds: 3),
-                    tween: Tween<double>(begin: 0.1,end: 1),
-                    curve: Curves.elasticOut,
-                    builder: (context,value,child){
-                      return Transform.scale(scale: value,child: AvatarGlow(
-                        glowColor: Colors.white,
-                        repeat: true,
-                        repeatPauseDuration: Duration(seconds: 3),
-                        duration: Duration(seconds: 3),
-                        endRadius: Size_Config.blockSizeHorizontal * 15,
-                        child: Material(
-                          elevation: 5,
-                          borderRadius: BorderRadius.circular(Size_Config.blockSizeHorizontal * 7),
-                          child: CircleAvatar(
-                            backgroundImage: AssetImage(
-                                'images/image1.gif'),
-                            radius: Size_Config.blockSizeHorizontal * 7,
-                          ),
-                        ),
-                      ),);
+                  child: FadeIn(1,GestureDetector(
+                    onTap: () {
+                      changePage(2);
+
                     },
+                    child: TweenAnimationBuilder(
+                      duration: Duration(seconds: 3),
+                      tween: Tween<double>(begin: 0.1,end: 1),
+                      curve: Curves.elasticOut,
+                      builder: (context,value,child){
+                        return Transform.scale(scale: value,child: AvatarGlow(
+                          glowColor: Colors.white,
+                          repeat: true,
+                          repeatPauseDuration: Duration(seconds: 3),
+                          duration: Duration(seconds: 3),
+                          endRadius: Size_Config.blockSizeHorizontal * 15,
+                          child: Material(
+                            elevation: 5,
+                            borderRadius: BorderRadius.circular(Size_Config.blockSizeHorizontal * 7),
+                            child: CircleAvatar(
+                              backgroundImage: AssetImage(
+                                  'images/image1.gif'),
+                              radius: Size_Config.blockSizeHorizontal * 7,
+                            ),
+                          ),
+                        ),);
+                      },
+                    ),
                   ),)
                 ),
               ],
@@ -235,11 +248,20 @@ class _frontpageState extends State<frontpage> {
                 alignment: Alignment.center,
                 height: Size_Config.screenHeight,
                 width: Size_Config.screenWidth,
-                color: Colors.grey[100],
+                //color: Colors.grey[100],
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('images/imagebg.png'),
+                    fit: BoxFit.cover,
+                    colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.1), BlendMode.dstATop),
+                  ),
+
+
+                  color: Colors.grey[100]
+                ),
                 child: Stack(
                   alignment: Alignment.topRight,
                   children: <Widget>[
-
                     Column(
                       children: <Widget>[
                         Expanded(
@@ -507,11 +529,11 @@ class _frontpageState extends State<frontpage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(
           CustomIcons.plus,
-          color: Colors.black,
+          color: Colors.white,
           size: 20,
         ),
         heroTag: "demoTag",
-        backgroundColor: Colors.grey[100],
+        backgroundColor: Colors.red,
         onPressed: () {
           Navigator.push(
               context, PageRouteBuilder(transitionDuration: Duration(milliseconds: 600),  pageBuilder: (_,__,___) => SecondPage()));

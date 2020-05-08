@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'Size_Config.dart';
+
 class FirstView extends StatefulWidget {
   @override
   _FirstViewState createState() => _FirstViewState();
@@ -35,13 +37,18 @@ class _FirstViewState extends State<FirstView> {
             ),
             Positioned(
               top: MediaQuery.of(context).size.height / 100 * 3,
-              right: MediaQuery.of(context).size.width / 100 * 5,
-              child: IconButton(
-                icon: Icon(Icons.clear),
-                iconSize: 50,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+              left: MediaQuery.of(context).size.width / 100 * 5,
+              child: Material(
+                shape: CircleBorder(),
+                elevation: 10,
+
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  iconSize: Size_Config.blockSizeHorizontal * 7,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
               ),
             ),
           ],
