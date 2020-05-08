@@ -191,7 +191,7 @@ class _frontpageState extends State<frontpage> {
                 Positioned(
                   top: Size_Config.blockSizeVertical * 15,
                   left: Size_Config.blockSizeHorizontal * 10,
-                  child: FadeIn(2.33,Text(
+                  child: FadeIn(1.66,Text(
                     'Hi Amith!',
                     style: TextStyle(
                         fontSize: Size_Config.blockSizeHorizontal * 9,
@@ -244,11 +244,11 @@ class _frontpageState extends State<frontpage> {
                       children: <Widget>[
                         Expanded(
                           flex: 3,
-                          child: CarouselSlider(
+                          child: FadeIn(2.33,CarouselSlider(
                               options: CarouselOptions(
                                 height: Size_Config.screenHeight,
                                 //aspectRatio: 16/9,
-                                initialPage: 1,
+                                initialPage: 0,
                                 enableInfiniteScroll: false,
                                 viewportFraction: 0.7,
                                 enlargeCenterPage: true,
@@ -263,9 +263,9 @@ class _frontpageState extends State<frontpage> {
                                       //color: Colors.red,
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: <Widget>[
                                           SizedBox(
                                             height: 20,
@@ -301,77 +301,77 @@ class _frontpageState extends State<frontpage> {
                                         Navigator.push(
                                             context,
                                             PageRouteBuilder(
-                                              transitionDuration: Duration(milliseconds: 800),
-                                              pageBuilder: (_,__,___)
-                                             =>
+                                                transitionDuration: Duration(milliseconds: 800),
+                                                pageBuilder: (_,__,___)
+                                                =>
                                                     FirstView()));
                                       },
                                       child: Material(
-                                        elevation: 10,
-                                        color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(25),
-                                        child: Stack(
-                                          children: <Widget>[
-                                            Container(
-                                              width: Size_Config.screenWidth,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                BorderRadius.circular(25),
-                                                color: Colors.red,
-                                                image: DecorationImage(
-                                                    image: AssetImage('images/image1.jpg'),
-                                                    fit: BoxFit.cover),
+                                          elevation: 10,
+                                          color: Colors.transparent,
+                                          borderRadius: BorderRadius.circular(25),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Container(
+                                                width: Size_Config.screenWidth,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(25),
+                                                  color: Colors.red,
+                                                  image: DecorationImage(
+                                                      image: AssetImage('images/image1.jpg'),
+                                                      fit: BoxFit.cover),
+                                                ),
                                               ),
-                                            ),
-                                            Positioned(left: 20,bottom: 30,child: Text('Do Anytime', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 8,color: Colors.white),))
-                                          ],
-                                        )
+                                              Positioned(left: 20,bottom: 30,child: Text('Do Anytime', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 8,color: Colors.white),))
+                                            ],
+                                          )
                                       ),
                                     ),
                                   ),
                                 ),
                                 Padding(
                                   padding:
-                                       EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5,top: Size_Config.blockSizeVertical * 5),
+                                  EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5,top: Size_Config.blockSizeVertical * 5),
                                   child: Hero(
                                     tag: "Var2",
                                     child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                  transitionDuration: Duration(milliseconds: 800),
-                                                  pageBuilder: (_,__,___)
-                                                  =>
-                                                      SecondView()));
-                                        },
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            PageRouteBuilder(
+                                                transitionDuration: Duration(milliseconds: 800),
+                                                pageBuilder: (_,__,___)
+                                                =>
+                                                    SecondView()));
+                                      },
                                       child: Material(
-                                        color: Colors.transparent,
-                                        elevation: 10,
-                                        borderRadius: BorderRadius.circular(25),
-                                        child: Stack(
-                                          children: <Widget>[
-                                            Container(
-                                              width: Size_Config.screenWidth,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(25),
-                                                  color: Colors.blue,
-                                                  image: DecorationImage(
-                                                    image: AssetImage('images/image2.jpg'),fit: BoxFit.cover,
-                                                  )),
-                                            ),
-                                            Positioned(left: 20,bottom: 30,child: Text('Morning', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 10,color: Colors.white),))
+                                          color: Colors.transparent,
+                                          elevation: 10,
+                                          borderRadius: BorderRadius.circular(25),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Container(
+                                                width: Size_Config.screenWidth,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(25),
+                                                    color: Colors.blue,
+                                                    image: DecorationImage(
+                                                      image: AssetImage('images/image2.jpg'),fit: BoxFit.cover,
+                                                    )),
+                                              ),
+                                              Positioned(left: 20,bottom: 30,child: Text('Morning', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 10,color: Colors.white),))
 
-                                          ],
-                                        )
+                                            ],
+                                          )
                                       ),
                                     ),
                                   ),
                                 ),
                                 Padding(
                                   padding:
-                                       EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5,top: Size_Config.blockSizeVertical *5),
+                                  EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5,top: Size_Config.blockSizeVertical *5),
                                   child: Hero(
                                     tag: "Var3",
                                     child: GestureDetector(
@@ -385,31 +385,31 @@ class _frontpageState extends State<frontpage> {
                                                     ThirdView()));
                                       },
                                       child: Material(
-                                        elevation: 10,
-                                        color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(25),
-                                        child: Stack(
-                                          children: <Widget>[
-                                            Container(
-                                              width: Size_Config.screenWidth,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(25),
-                                                  color: Colors.green,
-                                                  image: DecorationImage(
-                                                      image: AssetImage('images/image3.jpg'),fit: BoxFit.cover)),
-                                            ),
-                                            Positioned(left: 20,bottom: 30,child: Text('Afternoon', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 10,color: Colors.white),))
+                                          elevation: 10,
+                                          color: Colors.transparent,
+                                          borderRadius: BorderRadius.circular(25),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Container(
+                                                width: Size_Config.screenWidth,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(25),
+                                                    color: Colors.green,
+                                                    image: DecorationImage(
+                                                        image: AssetImage('images/image3.jpg'),fit: BoxFit.cover)),
+                                              ),
+                                              Positioned(left: 20,bottom: 30,child: Text('Afternoon', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 10,color: Colors.white),))
 
-                                          ],
-                                        )
+                                            ],
+                                          )
                                       ),
                                     ),
                                   ),
                                 ),
                                 Padding(
                                   padding:
-                                   EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5 ,top: Size_Config.blockSizeVertical * 5),
+                                  EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5 ,top: Size_Config.blockSizeVertical * 5),
                                   child: Hero(
                                     tag: "Var4",
                                     child: GestureDetector(
@@ -445,7 +445,7 @@ class _frontpageState extends State<frontpage> {
                                     ),
                                   ),
                                 ),
-                              ]),
+                              ]),)
                         ),
                       ],
                     ),
