@@ -1,4 +1,5 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:carouseldemo/Size_Config.dart';
 import 'package:carouseldemo/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,9 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
+
 class _ProfileState extends State<Profile> {
+
   @override
   Widget build(BuildContext context) {
     var _width = MediaQuery.of(context).size.width;
@@ -27,7 +30,7 @@ class _ProfileState extends State<Profile> {
             color: Colors.grey[100],
           ),
           Container(
-            height: _height * 0.3,
+            height: Size_Config.blockSizeVertical * 30,
             color: Colors.transparent,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -43,14 +46,14 @@ class _ProfileState extends State<Profile> {
                       repeat: true,
                       repeatPauseDuration: Duration(seconds: 3),
                       duration: Duration(seconds: 3),
-                      endRadius: 90,
+                      endRadius: Size_Config.blockSizeHorizontal * 22,
                       child: Material(
                         elevation: 5,
-                        borderRadius: BorderRadius.circular(60),
+                        borderRadius: BorderRadius.circular(Size_Config.blockSizeHorizontal * 15),
                         child: CircleAvatar(
                           backgroundImage: NetworkImage(
                               'https://raw.githubusercontent.com/amith-patil/business_card/master/images/joel_signature.gif'),
-                          radius: 60,
+                          radius: Size_Config.blockSizeHorizontal * 15,
                         ),
                       ),
                     ),);

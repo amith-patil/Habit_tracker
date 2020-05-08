@@ -2,6 +2,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:carouseldemo/FirstView.dart';
+import 'package:carouseldemo/Size_Config.dart';
 import 'package:carouseldemo/custom_icons_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -10,13 +11,17 @@ import 'package:flutter/services.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:carouseldemo/custom_icons_icons.dart';
 
+import 'FadeIn.dart';
+import 'FourthVIew.dart';
 import 'Profile.dart';
 import 'SecondPage.dart';
+import 'SecondView.dart';
 import 'Stats.dart';
+import 'ThirdView.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
+    statusBarColor: Colors.transparent,statusBarIconBrightness: Brightness.dark
   ));
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -28,7 +33,21 @@ class CarouselDemo extends StatefulWidget {
   _CarouselDemoState createState() => _CarouselDemoState();
 }
 
+
 class _CarouselDemoState extends State<CarouselDemo> {
+
+
+  @override
+  void initState() {
+    // adjust the provider based on the image type
+    precacheImage(new AssetImage('images/image1.gif'),context);
+    precacheImage(new AssetImage('images/image1.jpg'),context);
+    precacheImage(new AssetImage('images/image2.jpg'),context);
+    precacheImage(new AssetImage('images/image3.jpg'),context);
+    precacheImage(new AssetImage('images/image4.jpg'),context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,7 +61,6 @@ class frontpage extends StatefulWidget {
   @override
   _frontpageState createState() => _frontpageState();
 }
-
 class _frontpageState extends State<frontpage> {
   int _currentIndex = 0;
   PanelController _pc = new PanelController();
@@ -58,8 +76,8 @@ class _frontpageState extends State<frontpage> {
 
   @override
   Widget build(BuildContext context) {
-    var _width = MediaQuery.of(context).size.width;
-    var _height = MediaQuery.of(context).size.height;
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    Size_Config().init(context);
     return Scaffold(
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
@@ -67,72 +85,147 @@ class _frontpageState extends State<frontpage> {
         children: <Widget>[
           SlidingUpPanel(
             controller: _pc,
-            //backdropEnabled: true,
-            //backdropColor: Colors.black,
-            //backdropOpacity: 0.8,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-            minHeight: _height * 0.07,
-            maxHeight: _height / 1.12,
-            parallaxEnabled: true,
-            parallaxOffset: 0.2,
+            minHeight: Size_Config.blockSizeVertical * 10,
+            maxHeight: Size_Config.blockSizeVertical * 65,
+           // parallaxEnabled: true,
+           // parallaxOffset: 0.2,
             defaultPanelState: PanelState.OPEN,
             collapsed: Container(
+              alignment: Alignment.topCenter,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(25),
                       topLeft: Radius.circular(25)),
                   color: Colors.white),
               //color: Colors.white,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 8),
-                    height: 6,
-                    width: 64,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        color: Colors.grey[400]),
-                  ),
-                ],
+              child: IconButton(
+                icon: Icon(Icons.keyboard_arrow_up),
+                iconSize: 40,
+                color: Colors.grey,
+                onPressed: () {
+                  setState(() {
+                    _pc.open();
+                  });
+                },
               ),
             ),
             body: Stack(
+              alignment: Alignment.topRight,
               children: <Widget>[
+
                 Container(
-                  width: _width,
-                  height: _height,
+                  width: Size_Config.screenWidth,
+                  height: Size_Config.screenHeight,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [Colors.red, Colors.purple])),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 190, horizontal: 20),
+                    padding:  EdgeInsets.symmetric(
+                        vertical: Size_Config.blockSizeVertical * 20, horizontal: Size_Config.blockSizeHorizontal * 5),
                     child: Text(
-                      'Ok',
+                      'Ok!',
                       style: TextStyle(
-                          fontSize: 170,
+                          fontSize: Size_Config.blockSizeHorizontal * 50,
                           fontFamily: 'Pacifico',
                           color: Colors.black26),
                     ),
                   ),
                 ),
+                Container(
+
+                  height: Size_Config.screenHeight,
+                  width: Size_Config.blockSizeHorizontal * 20,
+                  color: Colors.black12,
+                ),
+                Container(
+
+                  height: Size_Config.blockSizeVertical * 25,
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        //Spacer(),
+                        Expanded(
+                          flex: 8,
+                          child: Container(),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  icon: Icon(CustomIcons.plus),
+                                  color: Colors.white54,
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SecondPage()));
+                                  },
+                                  //iconSize: 25,
+                                ),
+                              ),
+                              //Expanded(flex: 1, child: SizedBox()),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  onPressed: () => _pc.close(),
+                                  icon: Icon(CustomIcons.filter),
+                                  color: Colors.white54,
+                                  //iconSize: 40,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]),
+                ),
                 Positioned(
-                  bottom: 105,
-                  right: _width / 2 - 25,
-                  child: IconButton(
-                    icon: Icon(Icons.keyboard_arrow_up),
-                    iconSize: 40,
-                    color: Colors.white,
-                    onPressed: () {
-                      setState(() {
-                        _pc.open();
-                      });
+                  top: Size_Config.blockSizeVertical * 15,
+                  left: Size_Config.blockSizeHorizontal * 10,
+                  child: FadeIn(2.33,Text(
+                    'Hi Amith!',
+                    style: TextStyle(
+                        fontSize: Size_Config.blockSizeHorizontal * 9,
+                        fontFamily: 'Pacifico',
+                        color: Colors.white),
+                  ),)
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  width: Size_Config.screenWidth,
+                  child: FadeIn(1,TweenAnimationBuilder(
+                    duration: Duration(seconds: 3),
+                    tween: Tween<double>(begin: 0.1,end: 1),
+                    curve: Curves.elasticOut,
+                    builder: (context,value,child){
+                      return Transform.scale(scale: value,child: AvatarGlow(
+                        glowColor: Colors.white,
+                        repeat: true,
+                        repeatPauseDuration: Duration(seconds: 3),
+                        duration: Duration(seconds: 3),
+                        endRadius: Size_Config.blockSizeHorizontal * 15,
+                        child: Material(
+                          elevation: 5,
+                          borderRadius: BorderRadius.circular(Size_Config.blockSizeHorizontal * 7),
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage(
+                                'images/image1.gif'),
+                            radius: Size_Config.blockSizeHorizontal * 7,
+                          ),
+                        ),
+                      ),);
                     },
-                  ),
-                )
+                  ),)
+                ),
               ],
             ),
             panel: ClipRRect(
@@ -140,88 +233,33 @@ class _frontpageState extends State<frontpage> {
                   topLeft: Radius.circular(25), topRight: Radius.circular(25)),
               child: Container(
                 alignment: Alignment.center,
-                height: _height,
-                width: _width,
+                height: Size_Config.screenHeight,
+                width: Size_Config.screenWidth,
                 color: Colors.grey[100],
                 child: Stack(
                   alignment: Alignment.topRight,
                   children: <Widget>[
-                    Container(
-                      height: _height,
-                      width: _width * 0.2,
-                      color: Colors.grey[200],
-                    ),
+
                     Column(
                       children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Expanded(
-                                    flex: 8,
-                                    child: Container(),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Column(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 2,
-                                          child: IconButton(
-                                            icon: Icon(CustomIcons.plus),
-                                            color: Colors.grey,
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SecondPage()));
-                                            },
-                                            //iconSize: 25,
-                                          ),
-                                        ),
-                                        Expanded(flex: 1, child: SizedBox()),
-                                        Expanded(
-                                          flex: 1,
-                                          child: IconButton(
-                                            onPressed: () => _pc.close(),
-                                            icon: Icon(CustomIcons.filter),
-                                            color: Colors.grey,
-                                            //iconSize: 40,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ]),
-                          ),
-                        ),
                         Expanded(
                           flex: 3,
                           child: CarouselSlider(
                               options: CarouselOptions(
-                                height: _height,
-                                aspectRatio: 1,
+                                height: Size_Config.screenHeight,
+                                //aspectRatio: 16/9,
                                 initialPage: 1,
                                 enableInfiniteScroll: false,
-                                viewportFraction: 0.8,
+                                viewportFraction: 0.7,
                                 enlargeCenterPage: true,
                               ),
                               items: <Widget>[
                                 Container(
                                     alignment: Alignment.centerLeft,
-                                    width: _width,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      //color: Colors.yellow
-                                    ),
+                                    width: Size_Config.screenWidth,
                                     child: Container(
-                                      height: _height * 0.4,
-                                      width: _width * 0.6,
+                                      height: Size_Config.screenHeight,
+                                      width: Size_Config.blockSizeHorizontal *  60,
                                       //color: Colors.red,
                                       child: Column(
                                         crossAxisAlignment:
@@ -233,11 +271,12 @@ class _frontpageState extends State<frontpage> {
                                             height: 20,
                                           ),
                                           Text(
-                                            'Try Something\n new today',
+                                            'Try Something new today!',
                                             style: TextStyle(
                                                 fontFamily: 'Montserrat',
                                                 fontWeight: FontWeight.w700,
-                                                fontSize: 30),
+                                                fontSize: Size_Config.blockSizeHorizontal * 10),
+                                            textAlign: TextAlign.left,
                                           ),
                                           SizedBox(
                                             height: 20,
@@ -247,41 +286,44 @@ class _frontpageState extends State<frontpage> {
                                             style: TextStyle(
                                                 fontFamily: 'Montserrat',
                                                 fontWeight: FontWeight.w200,
-                                                fontSize: 20),
+                                                fontSize: Size_Config.blockSizeHorizontal * 5),
+                                            textAlign: TextAlign.left,
                                           )
                                         ],
                                       ),
                                     )),
                                 Padding(
-                                  padding: EdgeInsets.only(bottom: 50,top: 40),
+                                  padding: EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5,top: Size_Config.blockSizeVertical * 5),
                                   child: Hero(
                                     tag: "Var1",
                                     child: GestureDetector(
                                       onTap: () {
                                         Navigator.push(
                                             context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
+                                            PageRouteBuilder(
+                                              transitionDuration: Duration(milliseconds: 800),
+                                              pageBuilder: (_,__,___)
+                                             =>
                                                     FirstView()));
                                       },
                                       child: Material(
-                                        elevation: 15,
-                                        borderRadius: BorderRadius.circular(10),
+                                        elevation: 10,
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(25),
                                         child: Stack(
                                           children: <Widget>[
                                             Container(
-                                              width: _width,
+                                              width: Size_Config.screenWidth,
                                               decoration: BoxDecoration(
                                                 borderRadius:
-                                                BorderRadius.circular(10),
+                                                BorderRadius.circular(25),
                                                 color: Colors.red,
                                                 image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        'https://i.pinimg.com/originals/65/f5/6e/65f56efd2a0a3144424b4f47a39cd54f.jpg'),
+                                                    image: AssetImage('images/image1.jpg'),
                                                     fit: BoxFit.cover),
                                               ),
                                             ),
-                                            Positioned(left: 20,bottom: 30,child: Text('Do Anytime', style: TextStyle(fontFamily: 'Montserrat',fontSize: 40,color: Colors.white),))
+                                            Positioned(left: 20,bottom: 30,child: Text('Do Anytime', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 8,color: Colors.white),))
                                           ],
                                         )
                                       ),
@@ -290,120 +332,122 @@ class _frontpageState extends State<frontpage> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 50),
-                                  child: Material(
-                                    elevation: 15,
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Container(
-                                          width: _width,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(10),
-                                              color: Colors.blue,
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    'https://electricvehicles.in/wp-content/uploads/2018/07/bike-images-4.jpg'),
-                                                fit: BoxFit.cover,
-                                              )),
-                                        ),
-                                        Positioned(left: 20,bottom: 30,child: Text('Morning', style: TextStyle(fontFamily: 'Montserrat',fontSize: 40,color: Colors.white),))
+                                       EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5,top: Size_Config.blockSizeVertical * 5),
+                                  child: Hero(
+                                    tag: "Var2",
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                  transitionDuration: Duration(milliseconds: 800),
+                                                  pageBuilder: (_,__,___)
+                                                  =>
+                                                      SecondView()));
+                                        },
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        elevation: 10,
+                                        borderRadius: BorderRadius.circular(25),
+                                        child: Stack(
+                                          children: <Widget>[
+                                            Container(
+                                              width: Size_Config.screenWidth,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(25),
+                                                  color: Colors.blue,
+                                                  image: DecorationImage(
+                                                    image: AssetImage('images/image2.jpg'),fit: BoxFit.cover,
+                                                  )),
+                                            ),
+                                            Positioned(left: 20,bottom: 30,child: Text('Morning', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 10,color: Colors.white),))
 
-                                      ],
-                                    )
+                                          ],
+                                        )
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 50),
-                                  child: Material(
-                                    elevation: 15,
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Container(
-                                          width: _width,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(10),
-                                              color: Colors.green,
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      'https://blog.hdwallsource.com/wp-content/uploads/2016/02/gloomy-forest-bridge-wallpaper-49801-51479-hd-wallpapers.jpg'),
-                                                  fit: BoxFit.cover)),
-                                        ),
-                                        Positioned(left: 20,bottom: 30,child: Text('Afternoon', style: TextStyle(fontFamily: 'Montserrat',fontSize: 40,color: Colors.white),))
+                                       EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5,top: Size_Config.blockSizeVertical *5),
+                                  child: Hero(
+                                    tag: "Var3",
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            PageRouteBuilder(
+                                                transitionDuration: Duration(milliseconds: 800),
+                                                pageBuilder: (_,__,___)
+                                                =>
+                                                    ThirdView()));
+                                      },
+                                      child: Material(
+                                        elevation: 10,
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(25),
+                                        child: Stack(
+                                          children: <Widget>[
+                                            Container(
+                                              width: Size_Config.screenWidth,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(25),
+                                                  color: Colors.green,
+                                                  image: DecorationImage(
+                                                      image: AssetImage('images/image3.jpg'),fit: BoxFit.cover)),
+                                            ),
+                                            Positioned(left: 20,bottom: 30,child: Text('Afternoon', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 10,color: Colors.white),))
 
-                                      ],
-                                    )
+                                          ],
+                                        )
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 Padding(
                                   padding:
-                                  const EdgeInsets.symmetric(vertical: 50),
-                                  child: Material(
-                                      elevation: 15,
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Container(
-                                            width: _width,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                BorderRadius.circular(10),
-                                                color: Colors.green,
-                                                image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        'https://i.pinimg.com/originals/66/55/03/6655039bd090abed0037746c6edf662b.jpg'),
-                                                    fit: BoxFit.cover)),
-                                          ),
-                                          Positioned(left: 20,bottom: 30,child: Text('Evening', style: TextStyle(fontFamily: 'Montserrat',fontSize: 40,color: Colors.white),))
+                                   EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5 ,top: Size_Config.blockSizeVertical * 5),
+                                  child: Hero(
+                                    tag: "Var4",
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            PageRouteBuilder(
+                                                transitionDuration: Duration(milliseconds: 800),
+                                                pageBuilder: (_,__,___)
+                                                =>
+                                                    FourthView()));
+                                      },
+                                      child: Material(
+                                          elevation: 10,
+                                          color: Colors.transparent,
+                                          borderRadius: BorderRadius.circular(25),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Container(
+                                                width: Size_Config.screenWidth,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(25),
+                                                    color: Colors.green,
+                                                    image: DecorationImage(
+                                                        image: AssetImage('images/image4.jpg'),fit: BoxFit.cover)),
+                                              ),
+                                              Positioned(left: 20,bottom: 30,child: Text('Evening', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 10,color: Colors.white),))
 
-                                        ],
-                                      )
+                                            ],
+                                          )
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ]),
                         ),
                       ],
-                    ),
-                    Positioned(
-                      top: 125,
-                      left: 15,
-                      child: Text(
-                        'Hi Amith!',
-                        style: TextStyle(
-                            fontSize: 35,
-                            fontFamily: 'Pacifico',
-                            color: Colors.grey),
-                      ),
-                    ),
-                    Positioned(
-                      left: 1,
-                      child: TweenAnimationBuilder(
-                        duration: Duration(seconds: 2),
-                        tween: Tween<double>(begin: 0.1,end: 1),
-                        curve: Curves.elasticOut,
-                        builder: (context,value,child){
-                          return Transform.scale(scale: value,child: AvatarGlow(
-                            glowColor: Colors.redAccent,
-                            repeat: true,
-                            repeatPauseDuration: Duration(seconds: 3),
-                            duration: Duration(seconds: 3),
-                            endRadius: 70,
-                            child: Material(
-                              elevation: 5,
-                              borderRadius: BorderRadius.circular(40),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    'https://raw.githubusercontent.com/amith-patil/business_card/master/images/joel_signature.gif'),
-                                radius: 40,
-                              ),
-                            ),
-                          ),);
-                        },
-                      )
                     ),
                   ],
                 ),
@@ -419,7 +463,7 @@ class _frontpageState extends State<frontpage> {
         currentIndex: _currentIndex,
         onTap: changePage,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        elevation: 8,
+        elevation: 15,
         fabLocation: BubbleBottomBarFabLocation.end, //new
         hasNotch: true, //new
         hasInk: true, //new, gives a cute ink effect
@@ -437,25 +481,25 @@ class _frontpageState extends State<frontpage> {
               ),
               title: Text("Home",style: TextStyle(fontFamily: 'Montserrat'),)),
           BubbleBottomBarItem(
-              backgroundColor: Colors.deepPurple,
+              backgroundColor: Colors.red,
               icon: Icon(
                 CustomIcons.bar_chart,
                 color: Colors.black,
               ),
               activeIcon: Icon(
                 CustomIcons.bar_chart,
-                color: Colors.deepPurple,
+                color: Colors.red,
               ),
               title: Text("Stats",style: TextStyle(fontFamily: 'Montserrat'))),
           BubbleBottomBarItem(
-              backgroundColor: Colors.purple,
+              backgroundColor: Colors.red,
               icon: Icon(
                 CustomIcons.user,
                 color: Colors.black,
               ),
               activeIcon: Icon(
                 CustomIcons.user,
-                color: Colors.purple,
+                color: Colors.red,
               ),
               title: Text("Profile",style: TextStyle(fontFamily: 'Montserrat'))),
         ],
@@ -463,13 +507,14 @@ class _frontpageState extends State<frontpage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(
           CustomIcons.plus,
+          color: Colors.black,
           size: 20,
         ),
         heroTag: "demoTag",
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.grey[100],
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SecondPage()));
+              context, PageRouteBuilder(transitionDuration: Duration(milliseconds: 600),  pageBuilder: (_,__,___) => SecondPage()));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,

@@ -3,16 +3,16 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FirstView extends StatefulWidget {
+class SecondView extends StatefulWidget {
   @override
-  _FirstViewState createState() => _FirstViewState();
+  _SecondViewState createState() => _SecondViewState();
 }
 
-class _FirstViewState extends State<FirstView> {
+class _SecondViewState extends State<SecondView> {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: "Var1",
+      tag: "Var2",
       child: Scaffold(
         body: Stack(
           alignment: Alignment.center,
@@ -22,10 +22,8 @@ class _FirstViewState extends State<FirstView> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('images/image1.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                  color: Colors.transparent),
+                      image: AssetImage('images/image2.jpg'),
+                      fit: BoxFit.cover)),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
                 child: Container(
@@ -33,16 +31,12 @@ class _FirstViewState extends State<FirstView> {
                 ),
               ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height / 100 * 3,
-              right: MediaQuery.of(context).size.width / 100 * 5,
-              child: IconButton(
-                icon: Icon(Icons.clear),
-                iconSize: 50,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
+            IconButton(
+              icon: Icon(Icons.clear),
+              iconSize: 50,
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ],
         ),
