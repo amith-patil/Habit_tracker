@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:carouseldemo/FirstView.dart';
 import 'package:carouseldemo/Size_Config.dart';
 import 'package:carouseldemo/custom_icons_icons.dart';
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -92,30 +93,12 @@ class _frontpageState extends State<frontpage> {
             controller: _pc,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-            minHeight: Size_Config.blockSizeVertical * 10,
+            minHeight: Size_Config.blockSizeVertical * 50,
             maxHeight: Size_Config.blockSizeVertical * 65,
            // parallaxEnabled: true,
            // parallaxOffset: 0.2,
             defaultPanelState: PanelState.OPEN,
-            collapsed: Container(
-              alignment: Alignment.topCenter,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(25),
-                      topLeft: Radius.circular(25)),
-                  color: Colors.white),
-              //color: Colors.white,
-              child: IconButton(
-                icon: Icon(Icons.keyboard_arrow_up),
-                iconSize: 40,
-                color: Colors.grey,
-                onPressed: () {
-                  setState(() {
-                    _pc.open();
-                  });
-                },
-              ),
-            ),
+
             body: Stack(
               alignment: Alignment.topRight,
               children: <Widget>[
@@ -132,15 +115,15 @@ class _frontpageState extends State<frontpage> {
                       end: Alignment.bottomLeft,
                       colors: [Colors.red, Colors.purple])
                       ),
-                  child: Padding(
-                    padding:  EdgeInsets.symmetric(
-                        vertical: Size_Config.blockSizeVertical * 20, horizontal: Size_Config.blockSizeHorizontal * 5),
-                    child: Text(
-                      'Ok!',
-                      style: TextStyle(
-                          fontSize: Size_Config.blockSizeHorizontal * 50,
-                          fontFamily: 'Pacifico',
-                          color: Colors.black26),
+                  child: Container(
+                    margin: EdgeInsets.only(top: Size_Config.blockSizeVertical * 30,bottom: Size_Config.blockSizeVertical * 60,left: Size_Config.blockSizeHorizontal * 2,right: Size_Config.blockSizeHorizontal * 20),
+                    child: DatePicker(
+                      DateTime.now(),
+                      initialSelectedDate: DateTime.now(),
+                      monthTextStyle: TextStyle(fontFamily: 'Montserrat',color: Colors.white54),
+                      dateTextStyle: TextStyle(fontFamily: 'MontSerrat',fontSize: Size_Config.blockSizeHorizontal * 5,fontWeight: FontWeight.bold,color: Colors.white54),
+                      dayTextStyle: TextStyle(fontFamily: 'Montserrat',color: Colors.white54),
+                      onDateChange:(date) => _pc.open(),
                     ),
                   ),
                 ),
@@ -543,3 +526,24 @@ class _frontpageState extends State<frontpage> {
     );
   }
 }
+
+
+//collapsed: Container(
+//              alignment: Alignment.topCenter,
+//              decoration: BoxDecoration(
+//                  borderRadius: BorderRadius.only(
+//                      topRight: Radius.circular(25),
+//                      topLeft: Radius.circular(25)),
+//                  color: Colors.white),
+//              //color: Colors.white,
+//              child: IconButton(
+//                icon: Icon(Icons.keyboard_arrow_up),
+//                iconSize: 40,
+//                color: Colors.grey,
+//                onPressed: () {
+//                  setState(() {
+//                    _pc.open();
+//                  });
+//                },
+//              ),
+//            ),
