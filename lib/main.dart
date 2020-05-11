@@ -62,7 +62,9 @@ class frontpage extends StatefulWidget {
 }
 class _frontpageState extends State<frontpage> {
   int _currentIndex = 0;
+  DateTime _selectedDate = DateTime.now();
   PanelController _pc = new PanelController();
+  DatePickerController _dpc = new DatePickerController();
   PageController _pgc = new PageController(initialPage: 0);
   void changePage(int index) {
     setState(() {
@@ -70,8 +72,10 @@ class _frontpageState extends State<frontpage> {
       int time;
       if ( _currentIndex > index) {
         _currentIndex - index == 1 ? delta = true : delta = false; }
-       else if ( index > _currentIndex) {
+       else {
+        if ( index > _currentIndex) {
           index - _currentIndex == 1 ? delta = true : delta = false;
+      }
       }
       delta ? time = 400 : time = 800;
          _currentIndex = index;
@@ -115,16 +119,26 @@ class _frontpageState extends State<frontpage> {
                       end: Alignment.bottomLeft,
                       colors: [Colors.red, Colors.purple])
                       ),
-                  child: Container(
-                    margin: EdgeInsets.only(top: Size_Config.blockSizeVertical * 30,bottom: Size_Config.blockSizeVertical * 60,left: Size_Config.blockSizeHorizontal * 2,right: Size_Config.blockSizeHorizontal * 20),
-                    child: DatePicker(
-                      DateTime.now(),
-                      initialSelectedDate: DateTime.now(),
-                      monthTextStyle: TextStyle(fontFamily: 'Montserrat',color: Colors.white54),
-                      dateTextStyle: TextStyle(fontFamily: 'MontSerrat',fontSize: Size_Config.blockSizeHorizontal * 5,fontWeight: FontWeight.bold,color: Colors.white54),
-                      dayTextStyle: TextStyle(fontFamily: 'Montserrat',color: Colors.white54),
-                      onDateChange:(date) => _pc.open(),
-                    ),
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: Size_Config.blockSizeVertical * 30,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: Size_Config.blockSizeHorizontal * 20),
+                        child: DatePicker(
+                          DateTime.now().add(Duration(days: -1)),
+                          controller: _dpc,
+                          initialSelectedDate: _selectedDate,
+                          width: Size_Config.blockSizeHorizontal * 15,
+                          height: Size_Config.blockSizeVertical * 12,
+                          monthTextStyle: TextStyle(fontFamily: 'Montserrat',color: Colors.white54,fontSize: Size_Config.blockSizeHorizontal * 3),
+                          dateTextStyle: TextStyle(fontFamily: 'MontSerrat',fontSize: Size_Config.blockSizeHorizontal * 5,fontWeight: FontWeight.bold,color: Colors.white54),
+                          dayTextStyle: TextStyle(fontFamily: 'Montserrat',color: Colors.white54,fontSize: Size_Config.blockSizeHorizontal * 3),
+                          onDateChange:(date) { _pc.open(); _selectedDate = date;},
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -167,7 +181,7 @@ class _frontpageState extends State<frontpage> {
                               Expanded(
                                 flex: 1,
                                 child: IconButton(
-                                  onPressed: () => _pc.close(),
+                                  onPressed: () { _pc.close();_dpc.jumpToSelection();},
                                   icon: Icon(CustomIcons.filter),
                                   color: Colors.white54,
                                   //iconSize: 40,
