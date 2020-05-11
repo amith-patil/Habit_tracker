@@ -20,8 +20,8 @@ import 'ThirdView.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,statusBarIconBrightness: Brightness.dark
-  ));
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark));
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(CarouselDemo());
@@ -32,18 +32,15 @@ class CarouselDemo extends StatefulWidget {
   _CarouselDemoState createState() => _CarouselDemoState();
 }
 
-
 class _CarouselDemoState extends State<CarouselDemo> {
-
-
   @override
   void initState() {
     // adjust the provider based on the image type
-    precacheImage(new AssetImage('images/image1.gif'),context);
-    precacheImage(new AssetImage('images/image1.jpg'),context);
-    precacheImage(new AssetImage('images/image2.jpg'),context);
-    precacheImage(new AssetImage('images/image3.jpg'),context);
-    precacheImage(new AssetImage('images/image4.jpg'),context);
+    precacheImage(new AssetImage('images/image1.gif'), context);
+    precacheImage(new AssetImage('images/image1.jpg'), context);
+    precacheImage(new AssetImage('images/image2.jpg'), context);
+    precacheImage(new AssetImage('images/image3.jpg'), context);
+    precacheImage(new AssetImage('images/image4.jpg'), context);
     super.initState();
   }
 
@@ -60,8 +57,11 @@ class frontpage extends StatefulWidget {
   @override
   _frontpageState createState() => _frontpageState();
 }
+
 class _frontpageState extends State<frontpage> {
   int _currentIndex = 0;
+  bool isClosed = false;
+  DateTime _startDate = DateTime.parse('2020-05-01 00:00:00Z');
   DateTime _selectedDate = DateTime.now();
   PanelController _pc = new PanelController();
   DatePickerController _dpc = new DatePickerController();
@@ -70,23 +70,30 @@ class _frontpageState extends State<frontpage> {
     setState(() {
       bool delta;
       int time;
-      if ( _currentIndex > index) {
-        _currentIndex - index == 1 ? delta = true : delta = false; }
-       else {
-        if ( index > _currentIndex) {
+      if (_currentIndex > index) {
+        _currentIndex - index == 1 ? delta = true : delta = false;
+      } else {
+        if (index > _currentIndex) {
           index - _currentIndex == 1 ? delta = true : delta = false;
-      }
+        }
       }
       delta ? time = 400 : time = 800;
-         _currentIndex = index;
-      _pgc.animateToPage(_currentIndex, duration: Duration(milliseconds: time), curve: Curves.easeInOut);
-
+      _currentIndex = index;
+      _pgc.animateToPage(_currentIndex,
+          duration: Duration(milliseconds: time), curve: Curves.easeInOut);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    void initState() {
+      super.initState();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _dpc.jumpToSelection();
+      });
+    }
+
     Size_Config().init(context);
     return Scaffold(
       body: PageView(
@@ -99,9 +106,10 @@ class _frontpageState extends State<frontpage> {
                 topLeft: Radius.circular(25), topRight: Radius.circular(25)),
             minHeight: Size_Config.blockSizeVertical * 50,
             maxHeight: Size_Config.blockSizeVertical * 65,
-           // parallaxEnabled: true,
-           // parallaxOffset: 0.2,
+            // parallaxEnabled: true,
+            // parallaxOffset: 0.2,
             defaultPanelState: PanelState.OPEN,
+            isDraggable: false,
 
             body: Stack(
               alignment: Alignment.topRight,
@@ -110,50 +118,64 @@ class _frontpageState extends State<frontpage> {
                   width: Size_Config.screenWidth,
                   height: Size_Config.screenHeight,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/imagebg.png'),
-                      colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.1), BlendMode.dstATop),
-                      fit: BoxFit.cover
-                    ),gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [Colors.red, Colors.purple])
-                      ),
+                      image: DecorationImage(
+                          image: AssetImage('images/imagebg.png'),
+                          colorFilter: new ColorFilter.mode(
+                              Colors.white.withOpacity(0.1), BlendMode.dstATop),
+                          fit: BoxFit.cover),
+                      gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [Colors.red, Colors.purple])),
                   child: Column(
                     children: <Widget>[
                       SizedBox(
                         height: Size_Config.blockSizeVertical * 30,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: Size_Config.blockSizeHorizontal * 20),
+                        padding: EdgeInsets.only(
+                            right: Size_Config.blockSizeHorizontal * 20),
                         child: DatePicker(
-                          DateTime.now().add(Duration(days: -1)),
+                          _startDate,
                           controller: _dpc,
                           initialSelectedDate: _selectedDate,
                           width: Size_Config.blockSizeHorizontal * 15,
                           height: Size_Config.blockSizeVertical * 12,
-                          monthTextStyle: TextStyle(fontFamily: 'Montserrat',color: Colors.white54,fontSize: Size_Config.blockSizeHorizontal * 3),
-                          dateTextStyle: TextStyle(fontFamily: 'MontSerrat',fontSize: Size_Config.blockSizeHorizontal * 5,fontWeight: FontWeight.bold,color: Colors.white54),
-                          dayTextStyle: TextStyle(fontFamily: 'Montserrat',color: Colors.white54,fontSize: Size_Config.blockSizeHorizontal * 3),
-                          onDateChange:(date) { _pc.open(); _selectedDate = date;},
+                          monthTextStyle: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.white54,
+                              fontSize: Size_Config.blockSizeHorizontal * 3),
+                          dateTextStyle: TextStyle(
+                              fontFamily: 'MontSerrat',
+                              fontSize: Size_Config.blockSizeHorizontal * 5,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white54),
+                          dayTextStyle: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.white54,
+                              fontSize: Size_Config.blockSizeHorizontal * 3),
+                          onDateChange: (date) {
+                            _pc.open();
+                            isClosed = !isClosed;
+                            setState(() {
+                              _selectedDate = date;
+                            });
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-
                   height: Size_Config.screenHeight,
                   width: Size_Config.blockSizeHorizontal * 20,
                   color: Colors.black12,
                 ),
                 Container(
-
                   height: Size_Config.blockSizeVertical * 25,
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment:
-                      MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         //Spacer(),
                         Expanded(
@@ -172,7 +194,11 @@ class _frontpageState extends State<frontpage> {
                                   onPressed: () {
                                     Navigator.push(
                                         context,
-                                        PageRouteBuilder(transitionDuration: Duration(milliseconds: 600),  pageBuilder: (_,__,___) => SecondPage()));
+                                        PageRouteBuilder(
+                                            transitionDuration:
+                                                Duration(milliseconds: 600),
+                                            pageBuilder: (_, __, ___) =>
+                                                SecondPage()));
                                   },
                                   //iconSize: 25,
                                 ),
@@ -181,7 +207,12 @@ class _frontpageState extends State<frontpage> {
                               Expanded(
                                 flex: 1,
                                 child: IconButton(
-                                  onPressed: () { _pc.close();_dpc.jumpToSelection();},
+                                  onPressed: () {
+                                    isClosed ? _pc.open() : _pc.close();
+                                    isClosed = !isClosed;
+                                    print(isClosed);
+                                    _dpc.animateToSelection();
+                                  },
                                   icon: Icon(CustomIcons.filter),
                                   color: Colors.white54,
                                   //iconSize: 40,
@@ -193,49 +224,56 @@ class _frontpageState extends State<frontpage> {
                       ]),
                 ),
                 Positioned(
-                  top: Size_Config.blockSizeVertical * 15,
-                  left: Size_Config.blockSizeHorizontal * 10,
-                  child: FadeIn(1.66,Text(
-                    'Hi Amith!',
-                    style: TextStyle(
-                        fontSize: Size_Config.blockSizeHorizontal * 9,
-                        fontFamily: 'Pacifico',
-                        color: Colors.white),
-                  ),)
-                ),
+                    top: Size_Config.blockSizeVertical * 15,
+                    left: Size_Config.blockSizeHorizontal * 10,
+                    child: FadeIn(
+                      1.66,
+                      Text(
+                        'Hi Amith!',
+                        style: TextStyle(
+                            fontSize: Size_Config.blockSizeHorizontal * 9,
+                            fontFamily: 'Pacifico',
+                            color: Colors.white),
+                      ),
+                    )),
                 Container(
-                  alignment: Alignment.topLeft,
-                  width: Size_Config.screenWidth,
-                  child: FadeIn(1,GestureDetector(
-                    onTap: () {
-                      changePage(2);
-
-                    },
-                    child: TweenAnimationBuilder(
-                      duration: Duration(seconds: 3),
-                      tween: Tween<double>(begin: 0.1,end: 1),
-                      curve: Curves.elasticOut,
-                      builder: (context,value,child){
-                        return Transform.scale(scale: value,child: AvatarGlow(
-                          glowColor: Colors.white,
-                          repeat: true,
-                          repeatPauseDuration: Duration(seconds: 3),
+                    alignment: Alignment.topLeft,
+                    width: Size_Config.screenWidth,
+                    child: FadeIn(
+                      1,
+                      GestureDetector(
+                        onTap: () {
+                          changePage(2);
+                        },
+                        child: TweenAnimationBuilder(
                           duration: Duration(seconds: 3),
-                          endRadius: Size_Config.blockSizeHorizontal * 15,
-                          child: Material(
-                            elevation: 5,
-                            borderRadius: BorderRadius.circular(Size_Config.blockSizeHorizontal * 7),
-                            child: CircleAvatar(
-                              backgroundImage: AssetImage(
-                                  'images/image1.gif'),
-                              radius: Size_Config.blockSizeHorizontal * 7,
-                            ),
-                          ),
-                        ),);
-                      },
-                    ),
-                  ),)
-                ),
+                          tween: Tween<double>(begin: 0.1, end: 1),
+                          curve: Curves.elasticOut,
+                          builder: (context, value, child) {
+                            return Transform.scale(
+                              scale: value,
+                              child: AvatarGlow(
+                                glowColor: Colors.white,
+                                repeat: true,
+                                repeatPauseDuration: Duration(seconds: 3),
+                                duration: Duration(seconds: 3),
+                                endRadius: Size_Config.blockSizeHorizontal * 15,
+                                child: Material(
+                                  elevation: 5,
+                                  borderRadius: BorderRadius.circular(
+                                      Size_Config.blockSizeHorizontal * 7),
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage('images/image1.gif'),
+                                    radius: Size_Config.blockSizeHorizontal * 7,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    )),
               ],
             ),
             panel: ClipRRect(
@@ -247,225 +285,312 @@ class _frontpageState extends State<frontpage> {
                 width: Size_Config.screenWidth,
                 //color: Colors.grey[100],
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('images/imagebg.png'),
-                    fit: BoxFit.cover,
-                    colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.1), BlendMode.dstATop),
-                  ),
-
-
-                  color: Colors.grey[100]
-                ),
+                    image: DecorationImage(
+                      image: AssetImage('images/imagebg.png'),
+                      fit: BoxFit.cover,
+                      colorFilter: new ColorFilter.mode(
+                          Colors.white.withOpacity(0.1), BlendMode.dstATop),
+                    ),
+                    color: Colors.grey[100]),
                 child: Stack(
                   alignment: Alignment.topRight,
                   children: <Widget>[
                     Column(
                       children: <Widget>[
                         Expanded(
-                          flex: 3,
-                          child: FadeIn(2.33,CarouselSlider(
-                              options: CarouselOptions(
-                                height: Size_Config.screenHeight,
-                                //aspectRatio: 16/9,
-                                initialPage: 0,
-                                enableInfiniteScroll: false,
-                                viewportFraction: 0.7,
-                                enlargeCenterPage: true,
-                              ),
-                              items: <Widget>[
-                                Container(
-                                    alignment: Alignment.centerLeft,
-                                    width: Size_Config.screenWidth,
-                                    child: Container(
-                                      height: Size_Config.screenHeight,
-                                      width: Size_Config.blockSizeHorizontal *  60,
-                                      //color: Colors.red,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Text(
-                                            'Try Something new today!',
-                                            style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: Size_Config.blockSizeHorizontal * 10),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Text(
-                                            'if you do something consistently for 21 days, it becomes a habit! Are you ready to start a new habit?',
-                                            style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w200,
-                                                fontSize: Size_Config.blockSizeHorizontal * 5),
-                                            textAlign: TextAlign.left,
-                                          )
-                                        ],
-                                      ),
-                                    )),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5,top: Size_Config.blockSizeVertical * 5),
-                                  child: Hero(
-                                    tag: "Var1",
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            PageRouteBuilder(
-                                                transitionDuration: Duration(milliseconds: 800),
-                                                pageBuilder: (_,__,___)
-                                                =>
-                                                    FirstView()));
-                                      },
-                                      child: Material(
-                                          elevation: 10,
-                                          color: Colors.transparent,
-                                          borderRadius: BorderRadius.circular(25),
-                                          child: Stack(
+                            flex: 3,
+                            child: FadeIn(
+                              2.33,
+                              CarouselSlider(
+                                  options: CarouselOptions(
+                                    height: Size_Config.screenHeight,
+                                    //aspectRatio: 16/9,
+                                    initialPage: 0,
+                                    enableInfiniteScroll: false,
+                                    viewportFraction: 0.7,
+                                    enlargeCenterPage: true,
+                                  ),
+                                  items: <Widget>[
+                                    Container(
+                                        alignment: Alignment.centerLeft,
+                                        width: Size_Config.screenWidth,
+                                        child: Container(
+                                          height: Size_Config.screenHeight,
+                                          width:
+                                              Size_Config.blockSizeHorizontal *
+                                                  60,
+                                          //color: Colors.red,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: <Widget>[
-                                              Container(
-                                                width: Size_Config.screenWidth,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                'Try Something new today!',
+                                                style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: Size_Config
+                                                            .blockSizeHorizontal *
+                                                        10),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                'if you do something consistently for 21 days, it becomes a habit! Are you ready to start a new habit?',
+                                                style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w200,
+                                                    fontSize: Size_Config
+                                                            .blockSizeHorizontal *
+                                                        5),
+                                                textAlign: TextAlign.left,
+                                              )
+                                            ],
+                                          ),
+                                        )),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom:
+                                              Size_Config.blockSizeVertical * 5,
+                                          top: Size_Config.blockSizeVertical *
+                                              5),
+                                      child: Hero(
+                                        tag: "Var1",
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                    transitionDuration:
+                                                        Duration(
+                                                            milliseconds: 800),
+                                                    pageBuilder: (_, __, ___) =>
+                                                        FirstView()));
+                                          },
+                                          child: Material(
+                                              elevation: 10,
+                                              color: Colors.transparent,
+                                              borderRadius:
                                                   BorderRadius.circular(25),
-                                                  color: Colors.red,
-                                                  image: DecorationImage(
-                                                      image: AssetImage('images/image1.jpg'),
-                                                      fit: BoxFit.cover),
-                                                ),
-                                              ),
-                                              Positioned(left: 20,bottom: 30,child: Text('Do Anytime', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 8,color: Colors.white),))
-                                            ],
-                                          )
+                                              child: Stack(
+                                                children: <Widget>[
+                                                  Container(
+                                                    width:
+                                                        Size_Config.screenWidth,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              25),
+                                                      color: Colors.red,
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              'images/image1.jpg'),
+                                                          fit: BoxFit.cover),
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                      left: 20,
+                                                      bottom: 30,
+                                                      child: Text(
+                                                        'Do Anytime',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Montserrat',
+                                                            fontSize: Size_Config
+                                                                    .blockSizeHorizontal *
+                                                                8,
+                                                            color:
+                                                                Colors.white),
+                                                      ))
+                                                ],
+                                              )),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                  EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5,top: Size_Config.blockSizeVertical * 5),
-                                  child: Hero(
-                                    tag: "Var2",
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            PageRouteBuilder(
-                                                transitionDuration: Duration(milliseconds: 800),
-                                                pageBuilder: (_,__,___)
-                                                =>
-                                                    SecondView()));
-                                      },
-                                      child: Material(
-                                          color: Colors.transparent,
-                                          elevation: 10,
-                                          borderRadius: BorderRadius.circular(25),
-                                          child: Stack(
-                                            children: <Widget>[
-                                              Container(
-                                                width: Size_Config.screenWidth,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(25),
-                                                    color: Colors.blue,
-                                                    image: DecorationImage(
-                                                      image: AssetImage('images/image2.jpg'),fit: BoxFit.cover,
-                                                    )),
-                                              ),
-                                              Positioned(left: 20,bottom: 30,child: Text('Morning', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 10,color: Colors.white),))
-
-                                            ],
-                                          )
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom:
+                                              Size_Config.blockSizeVertical * 5,
+                                          top: Size_Config.blockSizeVertical *
+                                              5),
+                                      child: Hero(
+                                        tag: "Var2",
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                    transitionDuration:
+                                                        Duration(
+                                                            milliseconds: 800),
+                                                    pageBuilder: (_, __, ___) =>
+                                                        SecondView()));
+                                          },
+                                          child: Material(
+                                              color: Colors.transparent,
+                                              elevation: 10,
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                              child: Stack(
+                                                children: <Widget>[
+                                                  Container(
+                                                    width:
+                                                        Size_Config.screenWidth,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25),
+                                                        color: Colors.blue,
+                                                        image: DecorationImage(
+                                                          image: AssetImage(
+                                                              'images/image2.jpg'),
+                                                          fit: BoxFit.cover,
+                                                        )),
+                                                  ),
+                                                  Positioned(
+                                                      left: 20,
+                                                      bottom: 30,
+                                                      child: Text(
+                                                        'Morning',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Montserrat',
+                                                            fontSize: Size_Config
+                                                                    .blockSizeHorizontal *
+                                                                10,
+                                                            color:
+                                                                Colors.white),
+                                                      ))
+                                                ],
+                                              )),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                  EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5,top: Size_Config.blockSizeVertical *5),
-                                  child: Hero(
-                                    tag: "Var3",
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            PageRouteBuilder(
-                                                transitionDuration: Duration(milliseconds: 800),
-                                                pageBuilder: (_,__,___)
-                                                =>
-                                                    ThirdView()));
-                                      },
-                                      child: Material(
-                                          elevation: 10,
-                                          color: Colors.transparent,
-                                          borderRadius: BorderRadius.circular(25),
-                                          child: Stack(
-                                            children: <Widget>[
-                                              Container(
-                                                width: Size_Config.screenWidth,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(25),
-                                                    color: Colors.green,
-                                                    image: DecorationImage(
-                                                        image: AssetImage('images/image3.jpg'),fit: BoxFit.cover)),
-                                              ),
-                                              Positioned(left: 20,bottom: 30,child: Text('Afternoon', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 10,color: Colors.white),))
-
-                                            ],
-                                          )
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom:
+                                              Size_Config.blockSizeVertical * 5,
+                                          top: Size_Config.blockSizeVertical *
+                                              5),
+                                      child: Hero(
+                                        tag: "Var3",
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                    transitionDuration:
+                                                        Duration(
+                                                            milliseconds: 800),
+                                                    pageBuilder: (_, __, ___) =>
+                                                        ThirdView()));
+                                          },
+                                          child: Material(
+                                              elevation: 10,
+                                              color: Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                              child: Stack(
+                                                children: <Widget>[
+                                                  Container(
+                                                    width:
+                                                        Size_Config.screenWidth,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25),
+                                                        color: Colors.green,
+                                                        image: DecorationImage(
+                                                            image: AssetImage(
+                                                                'images/image3.jpg'),
+                                                            fit: BoxFit.cover)),
+                                                  ),
+                                                  Positioned(
+                                                      left: 20,
+                                                      bottom: 30,
+                                                      child: Text(
+                                                        'Afternoon',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Montserrat',
+                                                            fontSize: Size_Config
+                                                                    .blockSizeHorizontal *
+                                                                10,
+                                                            color:
+                                                                Colors.white),
+                                                      ))
+                                                ],
+                                              )),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                  EdgeInsets.only(bottom: Size_Config.blockSizeVertical * 5 ,top: Size_Config.blockSizeVertical * 5),
-                                  child: Hero(
-                                    tag: "Var4",
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            PageRouteBuilder(
-                                                transitionDuration: Duration(milliseconds: 800),
-                                                pageBuilder: (_,__,___)
-                                                =>
-                                                    FourthView()));
-                                      },
-                                      child: Material(
-                                          elevation: 10,
-                                          color: Colors.transparent,
-                                          borderRadius: BorderRadius.circular(25),
-                                          child: Stack(
-                                            children: <Widget>[
-                                              Container(
-                                                width: Size_Config.screenWidth,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(25),
-                                                    color: Colors.green,
-                                                    image: DecorationImage(
-                                                        image: AssetImage('images/image4.jpg'),fit: BoxFit.cover)),
-                                              ),
-                                              Positioned(left: 20,bottom: 30,child: Text('Evening', style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 10,color: Colors.white),))
-
-                                            ],
-                                          )
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom:
+                                              Size_Config.blockSizeVertical * 5,
+                                          top: Size_Config.blockSizeVertical *
+                                              5),
+                                      child: Hero(
+                                        tag: "Var4",
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                    transitionDuration:
+                                                        Duration(
+                                                            milliseconds: 800),
+                                                    pageBuilder: (_, __, ___) =>
+                                                        FourthView()));
+                                          },
+                                          child: Material(
+                                              elevation: 10,
+                                              color: Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                              child: Stack(
+                                                children: <Widget>[
+                                                  Container(
+                                                    width:
+                                                        Size_Config.screenWidth,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25),
+                                                        color: Colors.green,
+                                                        image: DecorationImage(
+                                                            image: AssetImage(
+                                                                'images/image4.jpg'),
+                                                            fit: BoxFit.cover)),
+                                                  ),
+                                                  Positioned(
+                                                      left: 20,
+                                                      bottom: 30,
+                                                      child: Text(
+                                                        'Evening',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Montserrat',
+                                                            fontSize: Size_Config
+                                                                    .blockSizeHorizontal *
+                                                                10,
+                                                            color:
+                                                                Colors.white),
+                                                      ))
+                                                ],
+                                              )),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ]),)
-                        ),
+                                  ]),
+                            )),
                       ],
                     ),
                   ],
@@ -498,7 +623,10 @@ class _frontpageState extends State<frontpage> {
                 CustomIcons.home,
                 color: Colors.red,
               ),
-              title: Text("Home",style: TextStyle(fontFamily: 'Montserrat'),)),
+              title: Text(
+                "Home",
+                style: TextStyle(fontFamily: 'Montserrat'),
+              )),
           BubbleBottomBarItem(
               backgroundColor: Colors.red,
               icon: Icon(
@@ -509,7 +637,7 @@ class _frontpageState extends State<frontpage> {
                 CustomIcons.bar_chart,
                 color: Colors.red,
               ),
-              title: Text("Stats",style: TextStyle(fontFamily: 'Montserrat'))),
+              title: Text("Stats", style: TextStyle(fontFamily: 'Montserrat'))),
           BubbleBottomBarItem(
               backgroundColor: Colors.red,
               icon: Icon(
@@ -520,7 +648,8 @@ class _frontpageState extends State<frontpage> {
                 CustomIcons.user,
                 color: Colors.red,
               ),
-              title: Text("Profile",style: TextStyle(fontFamily: 'Montserrat'))),
+              title:
+                  Text("Profile", style: TextStyle(fontFamily: 'Montserrat'))),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -533,14 +662,16 @@ class _frontpageState extends State<frontpage> {
         backgroundColor: Colors.red,
         onPressed: () {
           Navigator.push(
-              context, PageRouteBuilder(transitionDuration: Duration(milliseconds: 600),  pageBuilder: (_,__,___) => SecondPage()));
+              context,
+              PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 600),
+                  pageBuilder: (_, __, ___) => SecondPage()));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 }
-
 
 //collapsed: Container(
 //              alignment: Alignment.topCenter,
