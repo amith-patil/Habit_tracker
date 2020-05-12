@@ -1,7 +1,10 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:carouseldemo/FirstView.dart';
+import 'package:carouseldemo/Carousel_Pages/FirstView.dart';
+import 'package:carouseldemo/Carousel_Pages/SecondView.dart';
+import 'package:carouseldemo/Carousel_Pages/ThirdView.dart';
+import 'package:carouseldemo/Carousel_Pages/FourthVIew.dart';
 import 'package:carouseldemo/Size_Config.dart';
 import 'package:carouseldemo/custom_icons_icons.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
@@ -9,14 +12,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-
 import 'FadeIn.dart';
-import 'FourthVIew.dart';
 import 'Profile.dart';
 import 'SecondPage.dart';
-import 'SecondView.dart';
 import 'Stats.dart';
-import 'ThirdView.dart';
+
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -61,11 +61,33 @@ class frontpage extends StatefulWidget {
 class _frontpageState extends State<frontpage> {
   int _currentIndex = 0;
   bool isClosed = false;
+  bool firstTime = true;
   DateTime _startDate = DateTime.parse('2020-05-01 00:00:00Z');
   DateTime _selectedDate = DateTime.now();
   PanelController _pc = new PanelController();
   DatePickerController _dpc = new DatePickerController();
   PageController _pgc = new PageController(initialPage: 0);
+
+  final data1 = Data(
+    listItems: ["Brush teeth","workout","take shower","go to bed",],
+    listSubtitles: [" brush teeth twice a day","workout for an hour"," take shower at 11:00 AM", "go to bed at 11:00 PM"],
+    listIcons: [Icons.brush,Icons.weekend,Icons.watch,Icons.alarm]);
+
+  final data2 = Data(
+      listItems: ["Brush teeth","workout","take shower","Do dishes","go to bed"],
+      listSubtitles: [" brush teeth twice a day","workout for an hour"," take shower at 11:00 AM","Do all the dishes", "go to bed at 11:00 PM"],
+      listIcons: [Icons.brush,Icons.weekend,Icons.watch,Icons.dashboard,Icons.alarm]);
+
+  final data3 = Data(
+      listItems: ["Brush teeth","workout","eat lunch","go to bed",],
+      listSubtitles: [" brush teeth twice a day","workout for an hour"," eat a well balanced meal", "go to bed at 11:00 PM"],
+      listIcons: [Icons.brush,Icons.weekend,Icons.fastfood,Icons.alarm]);
+
+  final data4 = Data(
+      listItems: ["take shower","go to bed",],
+      listSubtitles: [" take shower at 11:00 AM", "go to bed at 11:00 PM"],
+      listIcons: [Icons.watch,Icons.alarm]);
+
   void changePage(int index) {
     setState(() {
       bool delta;
@@ -81,19 +103,13 @@ class _frontpageState extends State<frontpage> {
       _currentIndex = index;
       _pgc.animateToPage(_currentIndex,
           duration: Duration(milliseconds: time), curve: Curves.easeInOut);
+     // _pgc.jumpToPage(_currentIndex);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    void initState() {
-      super.initState();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _dpc.jumpToSelection();
-      });
-    }
-
     Size_Config().init(context);
     return Scaffold(
       body: PageView(
@@ -211,6 +227,13 @@ class _frontpageState extends State<frontpage> {
                                     isClosed ? _pc.open() : _pc.close();
                                     isClosed = !isClosed;
                                     print(isClosed);
+                                    //Jugaaad in code format
+                                    if(firstTime){
+                                      _dpc.animateToDate(DateTime.now().add(Duration(days: -1)));
+                                      firstTime = false;
+                                      print(firstTime);
+                                    }
+                                    else
                                     _dpc.animateToSelection();
                                   },
                                   icon: Icon(CustomIcons.filter),
@@ -343,7 +366,7 @@ class _frontpageState extends State<frontpage> {
                                                 height: 20,
                                               ),
                                               Text(
-                                                'if you do something consistently for 21 days, it becomes a habit! Are you ready to start a new habit?',
+                                                _selectedDate.day.toString(),
                                                 style: TextStyle(
                                                     fontFamily: 'Montserrat',
                                                     fontWeight: FontWeight.w200,
@@ -372,7 +395,7 @@ class _frontpageState extends State<frontpage> {
                                                         Duration(
                                                             milliseconds: 800),
                                                     pageBuilder: (_, __, ___) =>
-                                                        FirstView()));
+                                                        FirstView(data: data1)));
                                           },
                                           child: Material(
                                               elevation: 10,
@@ -408,7 +431,7 @@ class _frontpageState extends State<frontpage> {
                                                                 8,
                                                             color:
                                                                 Colors.white),
-                                                      ))
+                                                      )),
                                                 ],
                                               )),
                                         ),
@@ -431,7 +454,7 @@ class _frontpageState extends State<frontpage> {
                                                         Duration(
                                                             milliseconds: 800),
                                                     pageBuilder: (_, __, ___) =>
-                                                        SecondView()));
+                                                        SecondView(data: data2)));
                                           },
                                           child: Material(
                                               color: Colors.transparent,
@@ -490,7 +513,7 @@ class _frontpageState extends State<frontpage> {
                                                         Duration(
                                                             milliseconds: 800),
                                                     pageBuilder: (_, __, ___) =>
-                                                        ThirdView()));
+                                                        ThirdView(data: data3)));
                                           },
                                           child: Material(
                                               elevation: 10,
@@ -548,7 +571,7 @@ class _frontpageState extends State<frontpage> {
                                                         Duration(
                                                             milliseconds: 800),
                                                     pageBuilder: (_, __, ___) =>
-                                                        FourthView()));
+                                                        FourthView(data: data4)));
                                           },
                                           child: Material(
                                               elevation: 10,
@@ -598,7 +621,6 @@ class _frontpageState extends State<frontpage> {
               ),
             ),
           ),
-          Stats(),
           Profile(),
         ],
       ),
@@ -630,17 +652,6 @@ class _frontpageState extends State<frontpage> {
           BubbleBottomBarItem(
               backgroundColor: Colors.red,
               icon: Icon(
-                CustomIcons.bar_chart,
-                color: Colors.black,
-              ),
-              activeIcon: Icon(
-                CustomIcons.bar_chart,
-                color: Colors.red,
-              ),
-              title: Text("Stats", style: TextStyle(fontFamily: 'Montserrat'))),
-          BubbleBottomBarItem(
-              backgroundColor: Colors.red,
-              icon: Icon(
                 CustomIcons.user,
                 color: Colors.black,
               ),
@@ -648,8 +659,8 @@ class _frontpageState extends State<frontpage> {
                 CustomIcons.user,
                 color: Colors.red,
               ),
-              title:
-                  Text("Profile", style: TextStyle(fontFamily: 'Montserrat'))),
+              title: Text("Profile", style: TextStyle(fontFamily: 'Montserrat'))),
+
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -673,22 +684,11 @@ class _frontpageState extends State<frontpage> {
   }
 }
 
-//collapsed: Container(
-//              alignment: Alignment.topCenter,
-//              decoration: BoxDecoration(
-//                  borderRadius: BorderRadius.only(
-//                      topRight: Radius.circular(25),
-//                      topLeft: Radius.circular(25)),
-//                  color: Colors.white),
-//              //color: Colors.white,
-//              child: IconButton(
-//                icon: Icon(Icons.keyboard_arrow_up),
-//                iconSize: 40,
-//                color: Colors.grey,
-//                onPressed: () {
-//                  setState(() {
-//                    _pc.open();
-//                  });
-//                },
-//              ),
-//            ),
+
+class Data {
+  List<String> listItems;
+  List<String> listSubtitles;
+  List<IconData> listIcons;
+
+  Data({this.listItems, this.listSubtitles,this.listIcons});
+}

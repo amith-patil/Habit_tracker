@@ -31,8 +31,10 @@ class _ProfileState extends State<Profile> {
             image: AssetImage('images/imagebg.png'),
             fit: BoxFit.cover,
             colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.1), BlendMode.dstATop),
+
           ),
         ),
+
           ),
           Container(
             height: Size_Config.blockSizeVertical *100,
@@ -50,7 +52,7 @@ class _ProfileState extends State<Profile> {
                         curve: Curves.elasticOut,
                         builder: (context,value,child){
                           return Transform.scale(scale: value,child: AvatarGlow(
-                            glowColor: Colors.redAccent,
+                            glowColor: Colors.white,
                             repeat: true,
                             repeatPauseDuration: Duration(seconds: 3),
                             duration: Duration(seconds: 3),
@@ -76,7 +78,8 @@ class _ProfileState extends State<Profile> {
                     Text('Amith Patil',
                     style: TextStyle(
                       fontSize: Size_Config.blockSizeHorizontal * 12,
-                      fontFamily: 'Pacifico'
+                      fontFamily: 'Pacifico',
+                      color: Colors.redAccent,
                     ),)
                   ],
                 )

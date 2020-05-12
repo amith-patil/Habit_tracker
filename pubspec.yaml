@@ -29,7 +29,7 @@ dependencies:
   bubble_bottom_bar: ^1.2.0
   simple_animations: ^2.2.0
   date_picker_timeline: ^1.2.0
-  shared_preferences: ^0.5.6
+
 
 
   # The following adds the Cupertino Icons font to your application.

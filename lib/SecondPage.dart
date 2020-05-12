@@ -2,13 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'Size_Config.dart';
+import 'main.dart';
 
 class SecondPage extends StatefulWidget {
+  final Data data;
+
+  const SecondPage({Key key, this.data}) : super(key: key);
+
   @override
   _SecondPageState createState() => _SecondPageState();
 }
 
 class _SecondPageState extends State<SecondPage> {
+  final myControllerItem = TextEditingController();
+  final myControllerSubtitle = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myControllerItem.dispose();
+    myControllerSubtitle.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Hero(
@@ -69,6 +84,7 @@ class _SecondPageState extends State<SecondPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               TextField(
+                                controller: myControllerItem,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: 'Enter a habit!',
@@ -78,11 +94,22 @@ class _SecondPageState extends State<SecondPage> {
                                   fontSize: 30,
                                 ),
                               ),
+                              TextField(
+                                controller: myControllerSubtitle,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Enter a subtitle!',
+                                    hintStyle: TextStyle(color: Colors.grey)),
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 20,
+                                ),
+                              ),
                               Text(
                                 'Lets start with a new habit!',
                                 style: TextStyle(fontFamily: 'Montserrat',
                                 color: Colors.grey),
-                              )
+                              ),
                             ],
                           ),
                         )
