@@ -28,15 +28,14 @@ class _ThirdViewState extends State<ThirdView> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('images/image3.jpg'),fit: BoxFit.cover
-                  )
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
-                child: Container(
-                  decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
-                ),
-              ),
+                      image: AssetImage('images/imagebg.png'),
+                      colorFilter: new ColorFilter.mode(
+                          Colors.white.withOpacity(0.1), BlendMode.dstATop),
+                      fit: BoxFit.cover),
+                  gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [Colors.red, Colors.purple])),
             ),
             Column(
               children: <Widget>[
@@ -45,29 +44,53 @@ class _ThirdViewState extends State<ThirdView> {
                   child: SizedBox(
                     //height: Size_Config.blockSizeVertical * 30,
                     width: Size_Config.screenWidth,
-                    child: Material(
-                      elevation: 10,
-                      color: Colors.transparent,
-                      child: Container(color:Colors.redAccent,
-                          alignment: Alignment.center
-                          ,child: Text('Afternoon Habits',style: TextStyle(fontFamily: 'Pacifico',fontSize: Size_Config.blockSizeHorizontal * 10, color: Colors.white),)),
-                    ),
+                    child: Container(//color:Colors.redAccent,
+                        alignment: Alignment.center
+                        ,child: Text('Afternoon Habits',style: TextStyle(fontFamily: 'Pacifico',fontSize: Size_Config.blockSizeHorizontal * 10, color: Colors.white),)),
                   ),
                 ),
                 Expanded(
                   flex: 3,
                   child: ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
                     itemCount: widget.data.listItems.length,
                     itemBuilder: (BuildContext context,int index){
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 15),
-                        child: Material(
-                          elevation: 10,
-                          borderRadius: BorderRadius.circular(10),
-                          child: new ListTile(
-                            title: Text(widget.data.listItems[index],style: TextStyle(fontFamily: 'Montserrat',fontSize: 25,fontWeight: FontWeight.bold),),
-                            subtitle: Text(widget.data.listSubtitles[index]),
-                            leading: Icon(widget.data.listIcons[index]),
+                      final item = widget.data.listItems[index];
+                      return Dismissible(
+                        key: Key(item),
+                        background: Container(
+                            padding: EdgeInsets.only(left: 15),
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              Icons.check_circle,
+                              size: 45,
+                              color: Colors.white,
+                            )),
+                        secondaryBackground: Container(
+                            padding: EdgeInsets.only(right: 15),
+                            alignment: Alignment.centerRight,
+                            child: Icon(
+                              Icons.cancel,
+                              size: 45,
+                              color: Colors.white,
+                            )),
+                        onDismissed: (direction) {
+                          setState(() {
+                            widget.data.listItems.removeAt(index);
+                            widget.data.listSubtitles.removeAt(index);
+                            widget.data.listIcons.removeAt(index);
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10,),
+                          child: Material(
+                            elevation: 10,
+                            borderRadius: BorderRadius.circular(10),
+                            child: new ListTile(
+                              title: Text(widget.data.listItems[index],style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 5,fontWeight: FontWeight.bold),),
+                              subtitle: Text(widget.data.listSubtitles[index],style: TextStyle(fontFamily: 'Montserrat',fontSize: Size_Config.blockSizeHorizontal * 3,color: Colors.grey[900]),),
+                              leading: Icon(widget.data.listIcons[index],size: Size_Config.blockSizeVertical * 5,color: Colors.cyan,),
+                            ),
                           ),
                         ),
                       );
@@ -81,6 +104,7 @@ class _ThirdViewState extends State<ThirdView> {
               left: MediaQuery.of(context).size.width / 100 * 5,
               child: Material(
                 shape: CircleBorder(),
+                //borderRadius: BorderRadius.circular(15),
                 elevation: 10,
 
                 child: IconButton(

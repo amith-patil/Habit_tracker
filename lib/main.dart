@@ -69,43 +69,25 @@ class _frontpageState extends State<frontpage> {
   PageController _pgc = new PageController(initialPage: 0);
 
   final data1 = Data(
-    listItems: ["Brush teeth","workout","take shower","go to bed",],
-    listSubtitles: [" brush teeth twice a day","workout for an hour"," take shower at 11:00 AM", "go to bed at 11:00 PM"],
-    listIcons: [Icons.brush,Icons.weekend,Icons.watch,Icons.alarm]);
+    listItems: ["Call Sid",],
+    listSubtitles: [" Dont forget to call Sid",],
+    listIcons: [Icons.phone,]);
 
   final data2 = Data(
-      listItems: ["Brush teeth","workout","take shower","Do dishes","go to bed"],
-      listSubtitles: [" brush teeth twice a day","workout for an hour"," take shower at 11:00 AM","Do all the dishes", "go to bed at 11:00 PM"],
-      listIcons: [Icons.brush,Icons.weekend,Icons.watch,Icons.dashboard,Icons.alarm]);
+      listItems: ["Brush teeth","workout","take shower",],
+      listSubtitles: [" brush teeth twice a day","workout for an hour"," take shower at 11:00 AM",],
+      listIcons: [Icons.brush,Icons.gamepad,Icons.slow_motion_video,]);
 
   final data3 = Data(
-      listItems: ["Brush teeth","workout","eat lunch","go to bed",],
-      listSubtitles: [" brush teeth twice a day","workout for an hour"," eat a well balanced meal", "go to bed at 11:00 PM"],
-      listIcons: [Icons.brush,Icons.weekend,Icons.fastfood,Icons.alarm]);
+      listItems: ["eat lunch","Post Lunch walk"],
+      listSubtitles: [" eat a well balanced meal", "Go for a nice walk"],
+      listIcons: [Icons.fastfood,Icons.directions_walk]);
 
   final data4 = Data(
-      listItems: ["take shower","go to bed",],
-      listSubtitles: [" take shower at 11:00 AM", "go to bed at 11:00 PM"],
-      listIcons: [Icons.watch,Icons.alarm]);
+      listItems: ["Read a book","go to bed",],
+      listSubtitles: ["Read atleast 15 pages", "go to bed at 11:00 PM"],
+      listIcons: [Icons.book,Icons.alarm]);
 
-  void changePage(int index) {
-    setState(() {
-      bool delta;
-      int time;
-      if (_currentIndex > index) {
-        _currentIndex - index == 1 ? delta = true : delta = false;
-      } else {
-        if (index > _currentIndex) {
-          index - _currentIndex == 1 ? delta = true : delta = false;
-        }
-      }
-      delta ? time = 400 : time = 800;
-      _currentIndex = index;
-      _pgc.animateToPage(_currentIndex,
-          duration: Duration(milliseconds: time), curve: Curves.easeInOut);
-     // _pgc.jumpToPage(_currentIndex);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,6 +153,7 @@ class _frontpageState extends State<frontpage> {
                               color: Colors.white54,
                               fontSize: Size_Config.blockSizeHorizontal * 3),
                           onDateChange: (date) {
+                            //TODO : redraw carousel on date change
                             _pc.open();
                             isClosed = !isClosed;
                             setState(() {
@@ -266,7 +249,7 @@ class _frontpageState extends State<frontpage> {
                       1,
                       GestureDetector(
                         onTap: () {
-                          changePage(2);
+                          _pgc.jumpToPage(2);
                         },
                         child: TweenAnimationBuilder(
                           duration: Duration(seconds: 3),
@@ -624,53 +607,46 @@ class _frontpageState extends State<frontpage> {
           Profile(),
         ],
       ),
-      bottomNavigationBar: BubbleBottomBar(
-        opacity: .2,
-        currentIndex: _currentIndex,
-        onTap: changePage,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      bottomNavigationBar: BottomAppBar(
         elevation: 15,
-        fabLocation: BubbleBottomBarFabLocation.end, //new
-        hasNotch: true, //new
-        hasInk: true, //new, gives a cute ink effect
-        inkColor: Colors.black12, //optional, uses theme color if not specified
-        items: <BubbleBottomBarItem>[
-          BubbleBottomBarItem(
-              backgroundColor: Colors.red,
-              icon: Icon(
-                CustomIcons.home,
-                color: Colors.black,
+        //notchMargin: 15,
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: IconButton(
+                icon: Icon(Icons.home),
+                color: Colors.redAccent,
+                //visualDensity: VisualDensity.adaptivePlatformDensity,
+                iconSize: 45,
+                onPressed: (){
+                  setState(() {
+                    _pgc.jumpToPage(0);
+                  });
+                },
               ),
-              activeIcon: Icon(
-                CustomIcons.home,
-                color: Colors.red,
+            ),
+            Spacer(),
+            Expanded(
+              child: IconButton(
+                icon: Icon(Icons.person),
+                color: Colors.redAccent,
+                iconSize: 45,
+                onPressed: (){
+                  setState(() {
+                    _pgc.jumpToPage(1);
+                  });
+                },
               ),
-              title: Text(
-                "Home",
-                style: TextStyle(fontFamily: 'Montserrat'),
-              )),
-          BubbleBottomBarItem(
-              backgroundColor: Colors.red,
-              icon: Icon(
-                CustomIcons.user,
-                color: Colors.black,
-              ),
-              activeIcon: Icon(
-                CustomIcons.user,
-                color: Colors.red,
-              ),
-              title: Text("Profile", style: TextStyle(fontFamily: 'Montserrat'))),
-
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          CustomIcons.plus,
-          color: Colors.white,
-          size: 20,
+            ),
+          ],
         ),
-        heroTag: "demoTag",
-        backgroundColor: Colors.red,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.redAccent,
+        label: Text('New Habit'),
+        icon: Icon(Icons.add),
         onPressed: () {
           Navigator.push(
               context,
@@ -678,8 +654,8 @@ class _frontpageState extends State<frontpage> {
                   transitionDuration: Duration(milliseconds: 600),
                   pageBuilder: (_, __, ___) => SecondPage()));
         },
+        heroTag: "demoTag",
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 }
