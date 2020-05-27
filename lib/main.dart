@@ -249,7 +249,7 @@ class _frontpageState extends State<frontpage> {
                       1,
                       GestureDetector(
                         onTap: () {
-                          _pgc.jumpToPage(2);
+                          _pgc.jumpToPage(1);
                         },
                         child: TweenAnimationBuilder(
                           duration: Duration(seconds: 3),
@@ -652,7 +652,7 @@ class _frontpageState extends State<frontpage> {
               context,
               PageRouteBuilder(
                   transitionDuration: Duration(milliseconds: 600),
-                  pageBuilder: (_, __, ___) => SecondPage()));
+                  pageBuilder: (_, __, ___) => SecondPage(data: data1)));
         },
         heroTag: "demoTag",
       ),
