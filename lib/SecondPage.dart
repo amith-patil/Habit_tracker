@@ -205,6 +205,7 @@ class _SecondPageState extends State<SecondPage> {
                       SizedBox(
                         height: Size_Config.blockSizeVertical * 20,
                       ),
+                      //TODO: add icon picker
                       RaisedButton(
                         color: Colors.redAccent,
                         shape: RoundedRectangleBorder(
